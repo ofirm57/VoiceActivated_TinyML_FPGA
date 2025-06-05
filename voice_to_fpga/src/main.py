@@ -11,7 +11,6 @@ import numpy as np
 # Returns a result – e.g., "Detected word: Go"
 from tensorflow.lite.python.interpreter import Interpreter
 # from tensorflow.lite import Interpreter  # Alternative import path depending on version
-
 # 📐 Provides advanced signal processing functions
 # Like filtering, resampling, Fourier transforms
 from scipy import signal
@@ -20,6 +19,10 @@ from scipy import signal
 # Used for file operations, delays, and time measurement
 import os
 import time
+
+import librosa
+import parctice_modle
+from tensorflow.keras.models import load_model
 
 
 
@@ -31,10 +34,11 @@ import time
 #
 # פלט: רשימה של הסתברויות לכל מילה.
 SAMPLE_RATE = 16000
-DURATION_SECONDS = 4
+DURATION_SECONDS = 2
 KEYWORD = "go"
 TRESHOLD = 0.5
 JUMP_STEP = 1600
+MODEL_PATH = '/Users/wpyrmlkyly/Desktop/ProgramProjects/fpga/voice_to_fpga/command_model.h5'
 
 def record_voice():
     print("Start recording in:")
@@ -50,6 +54,27 @@ def record_voice():
     sd.wait()
     print("\nRecording complete.")
     return audio
+
+
+def record_and_preprocess():
+    print("Start recording in:")
+    for i in range(3, 0, -1):
+        print(i)
+        time.sleep(1)
+
+    print("Recording", end="", flush=True)
+    audio = sd.rec(int(SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1, dtype='float32')
+    sd.wait()
+    audio = audio.flatten()
+
+    # חילוץ תכונות MFCC
+    mfcc = librosa.feature.mfcc(y=audio, sr=SAMPLE_RATE, n_mfcc=parctice_modle.NUM_MFCC)
+    mfcc_padded = parctice_modle.pad_or_truncate(mfcc)
+    mfcc_padded = mfcc_padded[..., np.newaxis]  # הוספת ערוץ
+    mfcc_padded = np.expand_dims(mfcc_padded, axis=0)  # הוספת מימד batch
+
+    return mfcc_padded
+
 
 
 def play_voice(audio_section):
@@ -89,16 +114,42 @@ def from_r2Spectrogram(window):
     s= Interpreter.signal(window,SAMPLE_RATE)
     Interpreter.sig
 
+
+def predict_word(model, mfcc_input):
+    prediction = model.predict(mfcc_input)
+    predicted_index = np.argmax(prediction)
+    predicted_word = parctice_modle.WORDS[predicted_index]
+    confidence = prediction[0][predicted_index]
+
+    print("\nAll probabilities:")
+    for i, word in enumerate(parctice_modle.WORDS):
+        print(f"{word}: {prediction[0][i]:.2f}")
+
+    print(f"\nPredicted word: {predicted_word} ({confidence:.2f})")
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    raw_audio = record_voice()
+    loudest_window = find_loudest_window(raw_audio)  # 1 שנייה רועשת
+    play_voice(loudest_window)
+    mfcc = librosa.feature.mfcc(y=loudest_window.flatten(), sr=SAMPLE_RATE, n_mfcc=parctice_modle.NUM_MFCC)
+    mfcc_padded = parctice_modle.pad_or_truncate(mfcc)
+    mfcc_padded = mfcc_padded[..., np.newaxis]
+    mfcc_input = np.expand_dims(mfcc_padded, axis=0)
+    # זיהוי מילה מוקלטת
+    print("\n--- Voice Command Recognition ---")
+    m = load_model(MODEL_PATH)
+    predict_word(m, mfcc_input)
+
     # a = np.zeros(4, dtype='float32')
     # b=[0.,0.,0.,0.]
     # print(b)
     #
     # print(a)
     # r = trim_silence(record_voice())
-    e_r = find_loudest_window(record_voice())
-    play_voice(e_r)
+    # e_r = find_loudest_window(record_voice())
+    # play_voice(e_r)
     # print("r is = ", r)
     #
     # for i in range(0, len(r), 2):
