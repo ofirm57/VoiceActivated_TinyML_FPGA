@@ -25,7 +25,6 @@ import parctice_modle
 from tensorflow.keras.models import load_model
 
 
-
 # שם הקובץ: speech_commands_float32.tflite
 #
 # סוג המודל: CNN שעבר אימון על מילים כמו "yes", "no", "go", "stop", ועוד.
@@ -36,13 +35,13 @@ from tensorflow.keras.models import load_model
 SAMPLE_RATE = 16000
 DURATION_SECONDS = 2
 KEYWORD = "go"
-TRESHOLD = 0.5
+TRESHOLD = 0.6
 JUMP_STEP = 1600
-MODEL_PATH = '/Users/wpyrmlkyly/Desktop/ProgramProjects/fpga/voice_to_fpga/command_model.h5'
+MODEL_PATH = '/Users/wpyrmlkyly/Desktop/ProgramProjects/fpga/voice_to_fpga/src/command_model_last.h5'
 
 def record_voice():
     print("Start recording in:")
-    for i in range(3, 0, -1):
+    for i in range(1, 0, -1):
         print(i)
         time.sleep(1)
 
@@ -78,8 +77,8 @@ def record_and_preprocess():
 
 
 def play_voice(audio_section):
-    print("in two second you will sound the voice")
-    time.sleep(2)
+    print("in 1 second you will sound the voice")
+    time.sleep(1)
     sd.play(audio_section, samplerate=SAMPLE_RATE)
     sd.wait()
 
@@ -121,11 +120,15 @@ def predict_word(model, mfcc_input):
     predicted_word = parctice_modle.WORDS[predicted_index]
     confidence = prediction[0][predicted_index]
 
+
     print("\nAll probabilities:")
     for i, word in enumerate(parctice_modle.WORDS):
         print(f"{word}: {prediction[0][i]:.2f}")
 
-    print(f"\nPredicted word: {predicted_word} ({confidence:.2f})")
+    if confidence < TRESHOLD:
+        print(f"\nDetected: Unknown or Silence (confidence={confidence:.2f})")
+    else:
+        print(f"\nDetected: {predicted_word} (confidence={confidence:.2f})")
 
 
 # Press the green button in the gutter to run the script.
@@ -137,28 +140,7 @@ if __name__ == '__main__':
     mfcc_padded = parctice_modle.pad_or_truncate(mfcc)
     mfcc_padded = mfcc_padded[..., np.newaxis]
     mfcc_input = np.expand_dims(mfcc_padded, axis=0)
-    # זיהוי מילה מוקלטת
     print("\n--- Voice Command Recognition ---")
     m = load_model(MODEL_PATH)
     predict_word(m, mfcc_input)
 
-    # a = np.zeros(4, dtype='float32')
-    # b=[0.,0.,0.,0.]
-    # print(b)
-    #
-    # print(a)
-    # r = trim_silence(record_voice())
-    # e_r = find_loudest_window(record_voice())
-    # play_voice(e_r)
-    # print("r is = ", r)
-    #
-    # for i in range(0, len(r), 2):
-    #     segment = r[i:i + 4000]
-    #     energy = np.sum(segment ** 2)
-    #     print(f"Energy of segment {i // 4000}: {energy}")
-    # print("after: is = ", r)
-    # print("shape -> ", r.shape)
-    # print("len -> ", len(r))
-    # play_voice(trim_silence(record_voice()))
-    # window = np.array(np.array([16000]
-    # {0}), dtype = 'float32')
