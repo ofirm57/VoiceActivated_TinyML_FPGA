@@ -21,6 +21,15 @@ from scipy import signal
 import os
 import time
 
+
+
+# שם הקובץ: speech_commands_float32.tflite
+#
+# סוג המודל: CNN שעבר אימון על מילים כמו "yes", "no", "go", "stop", ועוד.
+#
+# קלט נדרש: קובץ שמע בפורמט waveform (raw PCM) בגודל 1 שנייה, עם קצב דגימה של 16kHz.
+#
+# פלט: רשימה של הסתברויות לכל מילה.
 SAMPLE_RATE = 16000
 DURATION_SECONDS = 4
 KEYWORD = "go"
