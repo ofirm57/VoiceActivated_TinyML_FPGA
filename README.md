@@ -41,6 +41,7 @@ The system currently includes:
 
 ## 📁 Project Structure
 
+```
 voice_to_fpga/
 ├── main.py               # Entry point: coordinates recording, preprocessing, prediction
 ├── recorder.py           # Handles microphone recording using sounddevice
@@ -51,6 +52,7 @@ voice_to_fpga/
 ├── rtl/                  # (Planned) SystemVerilog logic for FPGA response
 ├── utils/                # Helper functions (e.g., file IO, logging)
 ├── README.md             # You are here
+```
 
 ---
 
