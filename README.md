@@ -1,8 +1,9 @@
-# Voice to FPGA 🔊➡️🔌
+# Voice Activated - TinyML 🔊➡️🔌
 
-This project is a voice-controlled embedded system using **TinyML** on the **DE10-Standard** board. It recognizes a spoken keyword (such as `"Go"`) and sends a command to the **FPGA fabric** to activate an LED, motor, or any logic-controlled component.
+This project is a voice-controlled embedded system using TinyML on the DE10-Standard board.
+ It recognizes spoken keywords (e.g., "up", "down", "left", "right", "stop") and sends a command to the FPGA fabric to activate an LED, motor, or any other logic-controlled component.
 
----
+
 
 ## 🔧 Current Stage: Python-based Voice Capture & Preprocessing
 
@@ -14,22 +15,53 @@ At this point, the focus is on:
 
 ---
 
+## 🔧 Current Stage: Running on ARM + FPGA Response
+
+The system currently includes:
+
+- 📥 **Audio Recording** from microphone using Python (`sounddevice`)
+- 🧠 **Preprocessing & Feature Extraction** (MFCC)
+- 🤖 **TinyML Inference** using a TensorFlow Lite model on the ARM Cortex-A9 (Linux)
+- 📤 **Signal Transmission** to FPGA, triggering a SystemVerilog RTL module
+- 🧪 **Real-time end-to-end testing** for voice-to-hardware response
+
+---
+
 ## 🛠 Tech Stack
 
-- **Python 3.10**
-- `numpy`, `scipy`, `sounddevice`, `tensorflow`
-- Audio sampling rate: `16kHz`
-- Recording duration: `3 seconds`
-- Model format: `.tflite`
+- Python 3.10  
+- Libraries: `numpy`, `scipy`, `sounddevice`, `tensorflow` / `tflite_runtime`  
+- Embedded Linux on ARM (DE10-Standard)  
+- Model Format: `.tflite`  
+- Audio Sampling Rate: 16kHz  
+- Recording Duration: 1–3 seconds  
+- RTL written in SystemVerilog (compiled for Cyclone V SoC FPGA)
 
 ---
 
 ## 📁 Project Structure
 
-```bash
+```
 voice_to_fpga/
-├── main.py               # Records and plays voice
-├── preprocess.py         # Signal processing (WIP)
-├── model/                # Contains .tflite model
-├── utils/                # Helper functions
+├── main.py               # Entry point: coordinates recording, preprocessing, prediction
+├── recorder.py           # Handles microphone recording using sounddevice
+├── preprocessing.py      # Extracts MFCC features from audio
+├── predictor.py          # Loads and runs the TFLite model
+├── parctice_modle.py     # (Likely practice/training or debugging script)
+├── model/                # Contains the trained .tflite model
+├── rtl/                  # (Planned) SystemVerilog logic for FPGA response
+├── utils/                # Helper functions (e.g., file IO, logging)
 ├── README.md             # You are here
+```
+
+---
+
+## 🚀 Next Steps
+
+- Integrate push-button fallback and override  
+- Optimize latency and real-time performance  
+- Add visual/debug tools (e.g., confidence plot or CLI display)  
+- Package for deployment
+
+
+
