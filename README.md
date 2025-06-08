@@ -48,8 +48,9 @@ voice_to_fpga/
 ├── predictor.py          # Loads and runs the TFLite model
 ├── parctice_modle.py     # (Likely practice/training or debugging script)
 ├── model/                # Contains the trained .tflite model
+├── rtl/                  # (Planned) SystemVerilog logic for FPGA response
 ├── utils/                # Helper functions (e.g., file IO, logging)
-
+├── README.md             # You are here
 
 ---
 
