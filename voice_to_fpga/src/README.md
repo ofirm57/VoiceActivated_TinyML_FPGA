@@ -1,4 +1,4 @@
-Voice Activated - TinyML (Work-in-progress) 🔊➡️🔌
+Voice Activated - TinyML  🔊➡️🔌
 This project is a voice-controlled embedded system using TinyML on the DE10-Standard board. It recognizes spoken keywords (e.g., "up", "down", "left", "right", "stop") and sends a command to the FPGA fabric to activate an LED, motor, or any other logic-controlled component.
 
 🔧 Current Stage: Python-based Voice Capture & Preprocessing
