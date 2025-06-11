@@ -5,10 +5,8 @@
     input logic push_butten_in, //KEY0
 
     output logic  out_rec_2_arm,
-    output logic [7:0] out
+    output logic [2:0] print_out
 );
-
-assign out_rec_2_arm = (cs == RECORDING);
 
 typedef enum logic [2:0]{
     WELCOME =    3'd0  ,
@@ -22,8 +20,6 @@ typedef enum logic [2:0]{
     }state;
 
 state cs,ns;
-
-
 
 /////////////////////////////////////////////////// one push butten -> rec
 logic push_butten_delay, rec;
@@ -50,8 +46,7 @@ always_comb begin
     RIGHT     :    ns = cmd ;    
     STOP      :    ns = cmd ;    
     SILENCE   :    ns = cmd ;        
-    default   :    ns = WELCOME ; 
-        
+    default   :    ns = WELCOME ;    
     endcase
 end
 
@@ -61,8 +56,10 @@ always_ff @(posedge clk or negedge rstb) begin
     else begin
         cs <= ns;
     end
-    
 end
+
+assign out_rec_2_arm = (cs == RECORDING);
+assign print_out = cs;
 
 endmodule
 
