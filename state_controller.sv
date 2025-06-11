@@ -1,4 +1,4 @@
- module gen(
+ module state_controller(
     input logic clk,
     input logic rstb, // 
     input logic [2:0] cmd,
