@@ -46,7 +46,5 @@ always_ff @(posedge clk or negedge rstb) begin
     end
     end
     
-
-
 endmodule //lcd_monitor
 
