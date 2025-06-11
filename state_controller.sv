@@ -8,9 +8,7 @@
     output logic [7:0] out
 );
 
-
 assign out_rec_2_arm = (cs == RECORDING);
-
 
 typedef enum logic [2:0]{
     WELCOME =    3'd0  ,
@@ -24,8 +22,6 @@ typedef enum logic [2:0]{
     }state;
 
 state cs,ns;
-
-
 
 
 
