@@ -7,6 +7,8 @@ module lcd_monitor(
     output logic [7:0] print_pattern 
 );
 
+parameter integer CLK_FREQ = 50_000_000;
+
 logic [7:0] word_rom [0:7][0:7]; 
 logic [2:0] char_index;
 initial begin
@@ -29,7 +31,7 @@ always_ff @(posedge clk or negedge rstb) begin
         delay_counter <= 24'd0;
     end
     else begin
-    if (delay_counter >= 24'd5_000_000) begin        
+    if (delay_counter >= CLK_FREQ) begin        
         print_pattern <= word_rom[what_to_print][char_index];
         delay_counter <= 24'd0;
         if (char_index == 3'd7) 
