@@ -48,29 +48,5 @@ always_ff @(posedge clk or negedge rstb) begin
     
 
 
-
-
-
-
 endmodule //lcd_monitor
-
-
-
-
-module lcd_driver (
-    input  logic        clk,
-    input  logic        rstb,
-    input  logic [7:0]  char_in,
-    input  logic        char_valid,
-    
-    output logic [7:0]  lcd_data,
-    output logic        lcd_rs,
-    output logic        lcd_rw,
-    output logic        lcd_en,
-    
-    output logic        char_ready  // אומר שאתה מוכן לקבל תו חדש
-);
-
-
-endmodule //lcd_driver
 

@@ -10,7 +10,7 @@ module lcd_driver(
     output logic  lcd_en,
     output logic  char_ready
 );
-    
+
 parameter integer WAIT_PARAMETER = 2000;
 logic [15:0] wait_counter;
 
