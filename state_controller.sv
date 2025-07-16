@@ -61,6 +61,6 @@ end
 assign out_rec_2_arm = (cs == RECORDING);
 assign print_out = cs;
 
-endmodule
+endmodule // state_controller
 
 

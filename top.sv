@@ -8,9 +8,7 @@
 
     output logic [7:0] print_pattern 
 
-    input ,     
-    input logic clk ,     
-    input logic rstb ,  
+
     input logic  char_valid,
     
     output logic [7:0]  lcd_data,
@@ -30,11 +28,11 @@ state_controller the_state (.clk(clk), .rstb(rstb), .cmd(cmd), .push_butten_in(p
 
 logic  [7:0] the_char;
 
-lcd_monitor l_monitor (.clk(clk), .rstb(rstb), .what_to_print(cmd), .print_pattern(the_char));
+lcd_monitor l_monitor (.clk(clk), .rstb(rstb), .what_to_print(what_to_print), .print_pattern(the_char));
 
-logic  out_rec_2_arm ; 
+lcd_driver driver_lcd (.clk(clk), .rstb(rstb), .char_in(the_char), .char_valid(), .
+ );
 
 
-lcd_driver (.clk(clk), .rstb(rstb), )
 
 endmodule//top 

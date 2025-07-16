@@ -1,7 +1,8 @@
 module lcd_driver(
-    input logic  [7:0] char_in ,     
+         
     input logic clk ,     
-    input logic rstb ,  
+    input logic rstb ,
+    input logic  [7:0] char_in ,  
     input logic  char_valid,
     
     output logic [7:0]  lcd_data,

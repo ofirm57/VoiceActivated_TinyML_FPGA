@@ -38,7 +38,7 @@ always_ff @(posedge clk or negedge rstb) begin
           char_index <= 3'd0;  
         else 
             char_index <=  char_index + 3'd1;
-             end
+    end
     else  
         delay_counter <= delay_counter +  24'd01;
     
