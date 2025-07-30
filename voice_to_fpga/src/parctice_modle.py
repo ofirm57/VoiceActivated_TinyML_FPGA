@@ -20,14 +20,14 @@ MODEL_PATH = 'command_model_last.h5'
 DATASET_PATH = '/Users/wpyrmlkyly/Desktop/ProgramProjects/fpga/voice_to_fpga/src/dataset'
 WORDS = ['up', 'down', 'left', 'right', 'stop','silence']
 NUM_MFCC = 13
-MAX_LEN = 32  # מספר פריימים שנשמרים לכל דגימה
+MAX_LEN = 32  ## Number of frames kept per sample
 
 checkpoint = ModelCheckpoint(
-    'command_model_last.h5',       # איפה לשמור
-    monitor='val_accuracy',# לפי איזה מדד
-    save_best_only=True,   # רק כשהמודל משתפר
-    mode='max',            # אנחנו רוצים מקסימום של val_accuracy
-    verbose=1              # הדפסת מידע בזמן האימון
+    'command_model_last.h5',       # Path to save the model
+    monitor='val_accuracy',        # Metric to monitor
+    save_best_only=True,           # Save only when the model improves
+    mode='max',                    # We aim to maximize val_accuracy
+    verbose=1                      # Print messages during training
 )
 
 
@@ -121,19 +121,19 @@ if __name__ == '__main__':
 
     import matplotlib
 
-    matplotlib.use('Agg')  # לא מנסה לפתוח חלון GUI
+    matplotlib.use('Agg')  # Do not attempt to open a GUI window
 
-    # חיזוי על סט הבדיקה
+    # Prediction on test set
     y_pred = model.predict(X_test)
     y_pred_classes = np.argmax(y_pred, axis=1)
     y_true = np.argmax(y_test_cat, axis=1)
 
-    # הצגת מטריצת בלבול
+    # Display confusion matrix
     cm = confusion_matrix(y_true, y_pred_classes)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=WORDS)
     disp.plot(cmap=plt.cm.Blues)
     plt.title("Confusion Matrix")
-    plt.savefig("confusion_matrix.png")  # שומר את התמונה
+    plt.savefig("confusion_matrix.png") # Save the confusion matrix image
 
     # plt.show()
 
